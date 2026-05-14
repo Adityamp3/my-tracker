@@ -1,10 +1,22 @@
-import TestConnection from './test-connection'
+'use client'
+
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/lib/auth-context'
 
 export default function Home() {
-  return (
-    <main className="p-8">
-      <h1 className="text-3xl font-bold mb-4">5-Year Tracker</h1>
-      <TestConnection />
-    </main>
-  )
+  const router = useRouter()
+  const { user, loading } = useAuth()
+
+  useEffect(() => {
+    if (!loading) {
+      if (user) {
+        router.push('/dashboard')
+      } else {
+        router.push('/auth/login')
+      }
+    }
+  }, [user, loading, router])
+
+  return <div className="p-8 text-center">Redirecting...</div>
 }
